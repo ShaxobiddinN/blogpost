@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option go_package = "./blogpost";
+import "protos/common.proto";
+// import "google/protobuf/timestamp.proto";
+
+// The service definition.
+service ArticleService {
+    rpc Ping (Empty) returns (Pong) {}
+    rpc CreateArticle (CreateArticleRequest) returns (Article) {}
+    rpc UpdateArticle (UpdateArticleRequest) returns (Article) {}
+    rpc DeleteArticle (DeleteArticleRequest) returns (Article) {}
+    rpc GetArticleList (GetArticleListRequest) returns (GetArticleListResponse) {}
+    rpc GetArticleById (GetArticleByIdRequest) returns (GetArticleByIdResponse) {}
+
+
+
+
+
+}
+
+message  Content{
+    string title = 1;
+    string body = 2;
+}
+
+message Article {
+    string id = 1;
+    Content content = 2;
+    string author_id = 3;
+    string created_at = 4;
+    string updated_at = 5;
+//google.protobuf.Timestamp
+}
+
+message CreateArticleRequest{
+    Content content = 1;
+    string author_id = 2;
+}
+    
+message UpdateArticleRequest{
+    string id = 1;
+    Content content = 2;
+}
+
+message DeleteArticleRequest{
+    string id = 1;
+}
+
+message GetArticleListRequest{
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
+
+}
+message GetArticleListResponse{
+    repeated Article articles = 1;
+}
+
+message GetArticleByIdRequest{
+    string id = 1;
+}
+message GetArticleByIdResponse{
+    message Author{
+        string id = 1;
+        string fullname = 2;
+        string created_at = 3;
+        string updated_at = 4;
+        //google.protobuf.Timestamp
+    }
+    string id = 1;
+    Content content = 2;
+    Author author = 3;
+    string created_at = 4;
+    string updated_at = 5;
+    //google.protobuf.Timestamp
+}
