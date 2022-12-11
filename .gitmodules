@@ -1,0 +1,3 @@
+[submodule "article_service"]
+	path = article_service
+	url = git@github.com:ShaxobiddinN/article_service.git
