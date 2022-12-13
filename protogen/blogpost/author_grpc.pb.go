@@ -26,6 +26,9 @@ type AuthorServiceClient interface {
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
 	CreateAuthor(ctx context.Context, in *CreateAuthorRequest, opts ...grpc.CallOption) (*Author, error)
 	GetAuthorList(ctx context.Context, in *GetAuthorListRequest, opts ...grpc.CallOption) (*GetAuthorListResponse, error)
+	UpdateAuthor(ctx context.Context, in *UpdateAuthorRequest, opts ...grpc.CallOption) (*Author, error)
+	DeleteAuthor(ctx context.Context, in *DeleteAuthorRequest, opts ...grpc.CallOption) (*Author, error)
+	GetAuthorById(ctx context.Context, in *GetAuthorByIdRequest, opts ...grpc.CallOption) (*GetAuthorByIdResponse, error)
 }
 
 type authorServiceClient struct {
@@ -63,6 +66,33 @@ func (c *authorServiceClient) GetAuthorList(ctx context.Context, in *GetAuthorLi
 	return out, nil
 }
 
+func (c *authorServiceClient) UpdateAuthor(ctx context.Context, in *UpdateAuthorRequest, opts ...grpc.CallOption) (*Author, error) {
+	out := new(Author)
+	err := c.cc.Invoke(ctx, "/AuthorService/UpdateAuthor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authorServiceClient) DeleteAuthor(ctx context.Context, in *DeleteAuthorRequest, opts ...grpc.CallOption) (*Author, error) {
+	out := new(Author)
+	err := c.cc.Invoke(ctx, "/AuthorService/DeleteAuthor", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authorServiceClient) GetAuthorById(ctx context.Context, in *GetAuthorByIdRequest, opts ...grpc.CallOption) (*GetAuthorByIdResponse, error) {
+	out := new(GetAuthorByIdResponse)
+	err := c.cc.Invoke(ctx, "/AuthorService/GetAuthorById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthorServiceServer is the server API for AuthorService service.
 // All implementations must embed UnimplementedAuthorServiceServer
 // for forward compatibility
@@ -71,6 +101,9 @@ type AuthorServiceServer interface {
 	Ping(context.Context, *Empty) (*Pong, error)
 	CreateAuthor(context.Context, *CreateAuthorRequest) (*Author, error)
 	GetAuthorList(context.Context, *GetAuthorListRequest) (*GetAuthorListResponse, error)
+	UpdateAuthor(context.Context, *UpdateAuthorRequest) (*Author, error)
+	DeleteAuthor(context.Context, *DeleteAuthorRequest) (*Author, error)
+	GetAuthorById(context.Context, *GetAuthorByIdRequest) (*GetAuthorByIdResponse, error)
 	mustEmbedUnimplementedAuthorServiceServer()
 }
 
@@ -86,6 +119,15 @@ func (UnimplementedAuthorServiceServer) CreateAuthor(context.Context, *CreateAut
 }
 func (UnimplementedAuthorServiceServer) GetAuthorList(context.Context, *GetAuthorListRequest) (*GetAuthorListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAuthorList not implemented")
+}
+func (UnimplementedAuthorServiceServer) UpdateAuthor(context.Context, *UpdateAuthorRequest) (*Author, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthor not implemented")
+}
+func (UnimplementedAuthorServiceServer) DeleteAuthor(context.Context, *DeleteAuthorRequest) (*Author, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthor not implemented")
+}
+func (UnimplementedAuthorServiceServer) GetAuthorById(context.Context, *GetAuthorByIdRequest) (*GetAuthorByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthorById not implemented")
 }
 func (UnimplementedAuthorServiceServer) mustEmbedUnimplementedAuthorServiceServer() {}
 
@@ -154,6 +196,60 @@ func _AuthorService_GetAuthorList_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthorService_UpdateAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAuthorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorServiceServer).UpdateAuthor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AuthorService/UpdateAuthor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorServiceServer).UpdateAuthor(ctx, req.(*UpdateAuthorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthorService_DeleteAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAuthorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorServiceServer).DeleteAuthor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AuthorService/DeleteAuthor",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorServiceServer).DeleteAuthor(ctx, req.(*DeleteAuthorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthorService_GetAuthorById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuthorByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorServiceServer).GetAuthorById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/AuthorService/GetAuthorById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorServiceServer).GetAuthorById(ctx, req.(*GetAuthorByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthorService_ServiceDesc is the grpc.ServiceDesc for AuthorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -172,6 +268,18 @@ var AuthorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAuthorList",
 			Handler:    _AuthorService_GetAuthorList_Handler,
+		},
+		{
+			MethodName: "UpdateAuthor",
+			Handler:    _AuthorService_UpdateAuthor_Handler,
+		},
+		{
+			MethodName: "DeleteAuthor",
+			Handler:    _AuthorService_DeleteAuthor_Handler,
+		},
+		{
+			MethodName: "GetAuthorById",
+			Handler:    _AuthorService_GetAuthorById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

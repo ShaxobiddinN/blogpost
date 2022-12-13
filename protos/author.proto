@@ -2,7 +2,6 @@ syntax = "proto3";
 
 option go_package = "./blogpost";
 import "protos/common.proto";
-import "google/protobuf/timestamp.proto";
 
 
 // The service definition.
@@ -11,6 +10,9 @@ service AuthorService {
     rpc Ping (Empty) returns (Pong) {}
     rpc CreateAuthor (CreateAuthorRequest) returns (Author){}
     rpc GetAuthorList (GetAuthorListRequest) returns (GetAuthorListResponse){}
+    rpc UpdateAuthor (UpdateAuthorRequest) returns (Author) {}
+    rpc DeleteAuthor (DeleteAuthorRequest) returns (Author) {}
+    rpc GetAuthorById (GetAuthorByIdRequest) returns (GetAuthorByIdResponse) {}
 
 
 }
@@ -20,9 +22,9 @@ service AuthorService {
 message Author {
     string id = 1;
     string  fullname = 2;
-    google.protobuf.Timestamp created_at = 3;
-    google.protobuf.Timestamp updated_at = 4;
-
+    string created_at = 3;
+    string updated_at = 4;
+//google.protobuf.Timestamp
 }
 
 message CreateAuthorRequest{
@@ -30,8 +32,29 @@ message CreateAuthorRequest{
 }
 //davom ettirish kere
 message GetAuthorListRequest{
-
+    int32 offset = 1;
+    int32 limit = 2;
+    string search = 3;
 }
 message GetAuthorListResponse{
-    
+    repeated Author authors = 1;
+}
+
+message UpdateAuthorRequest{
+    string id = 1;
+    string fullname = 2;
+}
+
+message DeleteAuthorRequest{
+    string id = 1;
+}
+
+message GetAuthorByIdRequest{
+    string id = 1;
+}
+message GetAuthorByIdResponse{
+    string id = 1;
+    string fullname = 2;
+    string created_at = 3;
+    string updated_at = 4;
 }

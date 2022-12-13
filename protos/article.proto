@@ -48,9 +48,9 @@ message DeleteArticleRequest{
 }
 
 message GetArticleListRequest{
-    int32 offset = 1;
-    int32 limit = 2;
-    string search = 3;
+        int32 offset = 1;
+        int32 limit = 2;
+        string search = 3;
 
 }
 message GetArticleListResponse{
