@@ -4,3 +4,6 @@
 [submodule "api_gateway"]
 	path = api_gateway
 	url = git@github.com:ShaxobiddinN/api_gateway.git
+[submodule "auth_service"]
+	path = auth_service
+	url = git@github.com:ShaxobiddinN/auth_service.git

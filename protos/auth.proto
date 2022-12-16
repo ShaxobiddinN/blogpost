@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option go_package = "./blogpost";
+import "protos/common.proto";
+
+// The service definition.
+service AuthService {
+    rpc Ping (Empty) returns (Pong) {}
+    
+    rpc CreateUser (CreateUserRequest) returns (User) {}
+    rpc UpdateUser (UpdateUserRequest) returns (User) {}
+    rpc DeleteUser (DeleteUserRequest) returns (User) {}
+    rpc GetUserList (GetUserListRequest) returns (GetUserListResponse) {}
+    rpc GetUserById (GetUserByIdRequest) returns (User) {}
+
+    rpc Login (LoginRequest) returns (TokenResponse) {}
+    rpc HasAccess (TokenRequest) returns (HasAccessResponse) {}
+
+
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+message TokenResponse{
+    string token = 1;
+}
+
+message TokenRequest{
+    string token = 1;
+}
+message HasAccessResponse{
+    User user = 1;
+    bool has_access = 2;
+}
+
+message User {
+    string id = 1;
+    string username = 2;
+    string password = 3;
+    string user_type = 4;
+    string created_at = 5;
+    string updated_at = 6;
+}
+
+message CreateUserRequest{
+    string username = 1;
+    string password = 2;
+    string user_type = 3;
+
+}
+    
+message UpdateUserRequest{
+    string id = 1;
+    string password = 2;
+}
+
+message DeleteUserRequest{
+    string id = 1;
+}
+
+message GetUserListRequest{
+        int32 offset = 1;
+        int32 limit = 2;
+        string search = 3;
+
+}
+message GetUserListResponse{
+    repeated User users = 1;
+}
+
+message GetUserByIdRequest{
+    string id = 1;
+}
